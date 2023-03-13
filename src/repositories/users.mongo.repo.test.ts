@@ -8,7 +8,9 @@ describe('Given the repository UsersMongoRepo', () => {
   const repo = new UsersMongoRepo();
 
   const mockPopulateFunction = (mockPopulateValue: unknown) => ({
-    populate: jest.fn().mockResolvedValue(mockPopulateValue),
+    populate: jest.fn().mockImplementation(() => ({
+      exec: jest.fn().mockResolvedValue(mockPopulateValue),
+    })),
   });
 
   describe('When the repository is instanced', () => {
@@ -91,14 +93,23 @@ describe('Given the repository UsersMongoRepo', () => {
   });
 
   describe('When the erase method is used', () => {
+    let mockExecValue: unknown;
+    const mockExec = () => ({
+      exec: jest.fn().mockResolvedValue(mockExecValue),
+    });
+
     test('Then if it has an object to erase with its ID, the findByIdAndDelete function should be called', async () => {
-      (UserModel.findByIdAndDelete as jest.Mock).mockResolvedValue({});
+      mockExecValue = {};
+
+      (UserModel.findByIdAndDelete as jest.Mock).mockImplementation(mockExec);
       await repo.erase('1');
       expect(UserModel.findByIdAndDelete).toHaveBeenCalled();
     });
 
     test('Then if the findByIdAndDelete method resolve value to undefined, it should throw an Error', async () => {
-      (UserModel.findByIdAndDelete as jest.Mock).mockResolvedValue(null);
+      mockExecValue = null;
+
+      (UserModel.findByIdAndDelete as jest.Mock).mockImplementation(mockExec);
       expect(async () => repo.erase('')).rejects.toThrow();
     });
   });

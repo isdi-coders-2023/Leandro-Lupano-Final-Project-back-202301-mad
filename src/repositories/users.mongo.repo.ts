@@ -14,7 +14,7 @@ export class UsersMongoRepo implements Repo<UserStructure> {
   async read(): Promise<UserStructure[]> {
     debug('read method');
 
-    const data = await UserModel.find().populate('guitars');
+    const data = await UserModel.find().populate('guitars').exec();
 
     return data;
   }
@@ -22,7 +22,7 @@ export class UsersMongoRepo implements Repo<UserStructure> {
   async readId(id: string): Promise<UserStructure> {
     debug('readID method');
 
-    const data = await UserModel.findById(id).populate('guitars');
+    const data = await UserModel.findById(id).populate('guitars').exec();
 
     if (!data) throw new HTTPError(404, 'Not found', 'ID not found in readID');
 
@@ -42,7 +42,9 @@ export class UsersMongoRepo implements Repo<UserStructure> {
 
     const data = await UserModel.findByIdAndUpdate(info.id, info, {
       new: true,
-    }).populate('guitars');
+    })
+      .populate('guitars')
+      .exec();
 
     if (!data) throw new HTTPError(404, 'Not found', 'ID not found in update');
 
@@ -52,7 +54,7 @@ export class UsersMongoRepo implements Repo<UserStructure> {
   async erase(id: string): Promise<void> {
     debug('destroy method');
 
-    const data = await UserModel.findByIdAndDelete(id);
+    const data = await UserModel.findByIdAndDelete(id).exec();
 
     if (!data)
       throw new HTTPError(
@@ -65,9 +67,9 @@ export class UsersMongoRepo implements Repo<UserStructure> {
   async search(query: { key: string; value: unknown }) {
     debug('search method');
 
-    const data = await UserModel.find({ [query.key]: query.value }).populate(
-      'guitars'
-    );
+    const data = await UserModel.find({ [query.key]: query.value })
+      .populate('guitars')
+      .exec();
 
     return data;
   }
