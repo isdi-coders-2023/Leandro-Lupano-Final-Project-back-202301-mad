@@ -8,54 +8,42 @@ const debug = createDebug('GW:users-repo');
 
 export class UsersMongoRepo implements Repo<UserStructure> {
   constructor() {
-    debug('Users-Repo instanced');
+    debug('users-repo-instanced');
   }
 
   async read(): Promise<UserStructure[]> {
-    debug('read method');
-
+    debug('read-method');
     const data = await UserModel.find().populate('guitars').exec();
-
     return data;
   }
 
   async readId(id: string): Promise<UserStructure> {
-    debug('readID method');
-
+    debug('readID-method');
     const data = await UserModel.findById(id).populate('guitars').exec();
-
     if (!data) throw new HTTPError(404, 'Not found', 'ID not found in readID');
-
     return data;
   }
 
   async create(info: Partial<UserStructure>): Promise<UserStructure> {
-    debug('create method');
-
+    debug('create-method');
     const data = await UserModel.create(info);
-
     return data;
   }
 
   async update(info: Partial<UserStructure>): Promise<UserStructure> {
-    debug('update method');
-
+    debug('update-method');
     const data = await UserModel.findByIdAndUpdate(info.id, info, {
       new: true,
     })
       .populate('guitars')
       .exec();
-
     if (!data) throw new HTTPError(404, 'Not found', 'ID not found in update');
-
     return data;
   }
 
   async erase(id: string): Promise<void> {
-    debug('destroy method');
-
+    debug('erase-method');
     const data = await UserModel.findByIdAndDelete(id).exec();
-
     if (!data)
       throw new HTTPError(
         404,
@@ -65,12 +53,10 @@ export class UsersMongoRepo implements Repo<UserStructure> {
   }
 
   async search(query: { key: string; value: unknown }) {
-    debug('search method');
-
+    debug('search-method');
     const data = await UserModel.find({ [query.key]: query.value })
       .populate('guitars')
       .exec();
-
     return data;
   }
 }

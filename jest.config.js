@@ -13,6 +13,5 @@ export default {
     'users.mongo.model.ts',
     'guitars.mongo.model.ts',
     'config.ts',
-    'files.ts',
   ],
 };
