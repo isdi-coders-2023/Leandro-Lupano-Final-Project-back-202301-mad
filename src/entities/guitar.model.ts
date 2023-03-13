@@ -1,7 +1,7 @@
 export type GuitarStructure = {
   id: string;
   brand: string;
-  model: string;
+  modelGuitar: string;
   picture: string;
   style: string;
   material: string;

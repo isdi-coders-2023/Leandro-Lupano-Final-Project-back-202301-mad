@@ -7,7 +7,7 @@ const guitarSchema = new Schema<GuitarStructure>({
     required: true,
   },
 
-  model: {
+  modelGuitar: {
     type: String,
     required: true,
   },

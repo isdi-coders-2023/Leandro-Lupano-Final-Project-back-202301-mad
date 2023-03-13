@@ -24,15 +24,15 @@ export class UsersMongoRepo implements Repo<UserStructure> {
     return data;
   }
 
-  async create(info: Partial<UserStructure>): Promise<UserStructure> {
+  async create(user: Partial<UserStructure>): Promise<UserStructure> {
     debug('create-method');
-    const data = await UserModel.create(info);
+    const data = await UserModel.create(user);
     return data;
   }
 
-  async update(info: Partial<UserStructure>): Promise<UserStructure> {
+  async update(user: Partial<UserStructure>): Promise<UserStructure> {
     debug('update-method');
-    const data = await UserModel.findByIdAndUpdate(info.id, info, {
+    const data = await UserModel.findByIdAndUpdate(user.id, user, {
       new: true,
     })
       .populate('myGuitars')
