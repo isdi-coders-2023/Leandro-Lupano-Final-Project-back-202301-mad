@@ -11,6 +11,7 @@ export default {
     'routers',
     'db',
     'users.mongo.model.ts',
+    'guitars.mongo.model.ts',
     'config.ts',
     'files.ts',
   ],
