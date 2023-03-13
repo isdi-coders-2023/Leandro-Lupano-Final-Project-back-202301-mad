@@ -1,7 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 import { HTTPError } from '../errors/errors.js';
-import { Auth, TokenPayload } from '../helpers/auth.js';
+import { Auth } from '../helpers/auth.js';
 import createDebug from 'debug';
+import { TokenPayload } from '../helpers/token.payload.interface.js';
 
 const debug = createDebug('GW:interceptors');
 
