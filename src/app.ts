@@ -7,7 +7,7 @@ import { errorsMiddleware } from './middleware/errors.middleware.js';
 
 const debug = createDebug('GW:app');
 
-debug('App initiated');
+debug('app-initiated');
 
 export const app = express();
 

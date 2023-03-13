@@ -1,15 +1,10 @@
-import { Auth, TokenPayload } from './auth';
+import { Auth } from './auth';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
+import { TokenPayload } from './token.payload.interface';
 
 jest.mock('jsonwebtoken');
 jest.mock('bcryptjs');
-jest.mock('../config.js', () => ({
-  _dirname: 'test',
-  config: {
-    secret: 'test',
-  },
-}));
 
 describe('Given the Auth class', () => {
   afterEach(() => {
