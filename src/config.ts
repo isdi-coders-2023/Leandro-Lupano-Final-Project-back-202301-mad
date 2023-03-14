@@ -3,9 +3,9 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export const config = {
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  cluster: process.env.DB_CLUSTER,
-  jwtSecret: process.env.SECRET,
+  DB_USER: process.env.DB_USER,
+  DB_PASSWORD: process.env.DB_PASSWORD,
+  DB_CLUSTER: process.env.DB_CLUSTER,
+  SECRET: process.env.SECRET,
   port: process.env.PORT,
 };

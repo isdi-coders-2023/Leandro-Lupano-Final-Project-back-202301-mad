@@ -7,11 +7,10 @@ export default {
   collectCoverageFrom: ['src/**/*.ts'],
   coveragePathIgnorePatterns: [
     'index.ts',
+    'config.ts',
     'app.ts',
-    'routers',
-    'db',
     'users.mongo.model.ts',
     'guitars.mongo.model.ts',
-    'config.ts',
+    'routers',
   ],
 };
