@@ -2,7 +2,7 @@ import { model, Schema } from 'mongoose';
 import { UserStructure } from '../entities/user.model';
 
 const userSchema = new Schema<UserStructure>({
-  userName: {
+  username: {
     type: String,
     required: true,
     unique: true,

@@ -7,5 +7,5 @@ export const config = {
   DB_PASSWORD: process.env.DB_PASSWORD,
   DB_CLUSTER: process.env.DB_CLUSTER,
   SECRET: process.env.SECRET,
-  port: process.env.PORT,
+  PORT: process.env.PORT,
 };
