@@ -8,11 +8,11 @@ const salt = 10;
 
 export class Auth {
   static createJWT(payload: TokenPayload) {
-    return jwt.sign(payload, config.jwtSecret as string);
+    return jwt.sign(payload, config.SECRET as string);
   }
 
   static verifyJWT(token: string): TokenPayload {
-    const tokenInfo = jwt.verify(token, config.jwtSecret as string);
+    const tokenInfo = jwt.verify(token, config.SECRET as string);
 
     if (typeof tokenInfo === 'string')
       throw new HTTPError(498, 'Invalid Token', tokenInfo);
