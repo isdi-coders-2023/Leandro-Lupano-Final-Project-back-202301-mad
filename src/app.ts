@@ -4,6 +4,7 @@ import cors from 'cors';
 import { usersRouter } from './routers/users.router.js';
 import createDebug from 'debug';
 import { errorsMiddleware } from './middleware/errors.middleware.js';
+import { guitarsRouter } from './routers/guitars.router.js';
 
 const debug = createDebug('GW:app');
 
@@ -21,6 +22,7 @@ app.use(express.json());
 app.use(cors(corsOptions));
 
 app.use('/users', usersRouter);
+app.use('/guitars', guitarsRouter);
 
 app.use(errorsMiddleware);
 
