@@ -19,7 +19,7 @@ export class UsersController {
     try {
       debug('post-register-method');
 
-      if (!req.body.userName || !req.body.password)
+      if (!req.body.username || !req.body.password)
         throw new HTTPError(401, 'Unauthorized', 'Invalid username o password');
 
       req.body.password = await Auth.hash(req.body.password);
@@ -42,7 +42,7 @@ export class UsersController {
     try {
       debug('post-login-method');
 
-      if (!req.body.userName || !req.body.password)
+      if (!req.body.username || !req.body.password)
         throw new HTTPError(
           401,
           'Unauthorized',
@@ -50,8 +50,8 @@ export class UsersController {
         );
 
       const data = await this.usersRepo.search({
-        key: 'userName',
-        value: req.body.userName,
+        key: 'username',
+        value: req.body.username,
       });
 
       if (!data.length)
@@ -62,7 +62,7 @@ export class UsersController {
 
       const payload: TokenPayload = {
         id: data[0].id,
-        userName: data[0].userName,
+        username: data[0].username,
         role: data[0].role,
       };
 

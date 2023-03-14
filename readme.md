@@ -42,7 +42,7 @@ Backend of a guitar's e-commerce project developed with [Node.js](https://nodejs
 - **User:**
 
   - id: `string`
-  - userName: `string`
+  - username: `string`
   - email: `string`
   - password: `string`
   - role: `string`

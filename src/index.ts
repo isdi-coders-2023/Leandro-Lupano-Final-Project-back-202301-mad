@@ -2,16 +2,16 @@ import http from 'http';
 import { app } from './app.js';
 import { dbConnect } from './db/db.connect.js';
 import { config } from './config.js';
-const { port } = config;
+const { PORT } = config;
 import createDebug from 'debug';
 
 const debug = createDebug('GW');
-const PORT = port || 6000;
+const port = PORT || 6000;
 const server = http.createServer(app);
 
 dbConnect()
   .then((mongoose) => {
-    server.listen(PORT);
+    server.listen(port);
     debug('DB: ', mongoose.connection.db.databaseName);
   })
   .catch((error) => server.emit('error', error));
@@ -21,5 +21,5 @@ server.on('error', (error) => {
 });
 
 server.on('listening', () => {
-  debug('Listening http://localhost:' + PORT);
+  debug('Listening http://localhost:' + port);
 });

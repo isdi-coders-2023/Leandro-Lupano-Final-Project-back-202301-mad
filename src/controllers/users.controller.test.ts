@@ -29,7 +29,7 @@ describe('Given the controller UsersController', () => {
     test('Then if the user information is completed, it should return the resp.status and resp.json', async () => {
       const req = {
         body: {
-          userName: 'test',
+          username: 'test',
           password: 'test',
         },
       } as unknown as Request;
@@ -54,7 +54,7 @@ describe('Given the controller UsersController', () => {
     test('Then if there is no password in the body user information, it should be catch the error and next function have been called', async () => {
       const req = {
         body: {
-          userName: 'test',
+          username: 'test',
         },
       } as unknown as Request;
 
@@ -67,7 +67,7 @@ describe('Given the controller UsersController', () => {
     test('Then if the user information is completed, it should return the resp.status and resp.json', async () => {
       const req = {
         body: {
-          userName: 'test',
+          username: 'test',
           password: 'test',
         },
       } as unknown as Request;
@@ -95,7 +95,7 @@ describe('Given the controller UsersController', () => {
     test('Then if there is no password in the user information, it should be catch the error and next function have been called', async () => {
       const req = {
         body: {
-          userName: 'test',
+          username: 'test',
         },
       } as unknown as Request;
 
@@ -106,7 +106,7 @@ describe('Given the controller UsersController', () => {
     test('Then if the user information is complete but the search method return an empty array, it should be catch the error and next function have been called', async () => {
       const req = {
         body: {
-          userName: 'test',
+          username: 'test',
           password: 'test',
         },
       } as unknown as Request;
@@ -120,7 +120,7 @@ describe('Given the controller UsersController', () => {
     test('Then if the user information is complete but the compare method of Auth return false, it should be catch the error and next function have been called', async () => {
       const req = {
         body: {
-          userName: 'test',
+          username: 'test',
           password: 'test',
         },
       } as unknown as Request;

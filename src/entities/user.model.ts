@@ -2,7 +2,7 @@ import { GuitarStructure } from './guitar.model';
 
 export type UserStructure = {
   id: string;
-  userName: string;
+  username: string;
   email: string;
   password: string;
   role: string;
