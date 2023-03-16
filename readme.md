@@ -20,20 +20,21 @@ Backend of a guitar's e-commerce project developed with [Node.js](https://nodejs
 
 - **.post(’/users/register’)** → User register.
 - **.post(’/users/login’)** → User login.
+- **.get(’/users/:idUser’)** → Load one user. Need to be logged in.
+- **.patch(’/users/add/cart/:idGuitar’)** → Add guitars to shopping cart. Need to be logged in.
+- **.patch(’/users/remove/cart/:idGuitar’)** → Remove guitars to shopping cart. Need to be logged in.
 - **.get(’/users/’)** → Load all users. Only for Admin.
-- **.patch(’/users/add/cart/:id-guitar’)** → Add guitars to shopping cart. Need to be logged in.
-- **.patch(’/users/remove/cart/:id-guitar’)** → Remove guitars to shopping cart. Need to be logged in.
-- **.patch(’/users/edit/:id-user’)** → Edit a user. Only for Admin.
-- **.delete(’/users/delete/:id-user’)** → Delete a user. Only for Admin.
+- **.patch(’/users/edit/:idUser’)** → Edit a user. Only for Admin.
+- **.delete(’/users/delete/:idUser’)** → Delete a user. Only for Admin.
 
 **‘/guitars’:**
 
+- **.get(’/guitars/:guitarStyle’)** → Guitar's filter by style. Need to be logged in.
+- **.get(’/guitars/details/:idGuitar’)** → Load guitar's details. Need to be logged in.
 - **.get(’/guitars/:page’)** → Load all guitars. Need to be logged in.
-- **.get(’/guitars/:style-guitar’)** → Guitar's filter by style. Need to be logged in.
-- **.get(’/guitars/details/:id-guitar’)** → Load guitar's details. Need to be logged in.
 - **.post(’/guitars/create’)** → Create a new guitar. Only for Admin.
-- **.patch(’/guitars/edit/:id-guitar’)** → Edit a guitar. Only for Admin
-- **.delete(’/guitars/delete/:id-guitar’)** → Delete a guitar. Only for Admin
+- **.patch(’/guitars/edit/:idGuitar’)** → Edit a guitar. Only for Admin
+- **.delete(’/guitars/delete/:idGuitar’)** → Delete a guitar. Only for Admin
   <br>
   <br>
 
