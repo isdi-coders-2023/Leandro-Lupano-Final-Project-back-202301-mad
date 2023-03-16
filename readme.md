@@ -29,9 +29,8 @@ Backend of a guitar's e-commerce project developed with [Node.js](https://nodejs
 
 **‘/guitars’:**
 
-- **.get(’/guitars/:guitarStyle’)** → Guitar's filter by style. Need to be logged in.
+- **.get(’/guitars/products?style=&page=’)** → Get guitars by style and page. Need to be logged in.
 - **.get(’/guitars/details/:idGuitar’)** → Load guitar's details. Need to be logged in.
-- **.get(’/guitars/:page’)** → Load all guitars. Need to be logged in.
 - **.post(’/guitars/create’)** → Create a new guitar. Only for Admin.
 - **.patch(’/guitars/edit/:idGuitar’)** → Edit a guitar. Only for Admin
 - **.delete(’/guitars/delete/:idGuitar’)** → Delete a guitar. Only for Admin
@@ -75,4 +74,4 @@ Backend of a guitar's e-commerce project developed with [Node.js](https://nodejs
 <br>
 <br>
 .
-![rockstar](https://t3.ftcdn.net/jpg/01/70/12/02/360_F_170120287_OqdsKQSUsa5ro0uCOMVEteoZkaMJQvue.webp)
+![guitar-world-logo](https://t3.ftcdn.net/jpg/01/70/12/02/360_F_170120287_OqdsKQSUsa5ro0uCOMVEteoZkaMJQvue.webp)

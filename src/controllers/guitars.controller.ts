@@ -19,6 +19,13 @@ export class GuitarsController {
 
       const newGuitar = req.body;
 
+      if (req.body.style !== 'Electric' && req.body.style !== 'Acoustic')
+        throw new HTTPError(
+          400,
+          'Wrong guitar type',
+          'The guitar type is not Electric neither Acoustic'
+        );
+
       const data = await this.guitarsRepo.create(newGuitar);
 
       resp.status(201);

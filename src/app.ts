@@ -43,9 +43,8 @@ app.get('*', (_req, resp) => {
       <br>
     <h4> /guitars </h4>
     <ul>
-      <li> GET (logged) guitars/style/:guitarStyle </li>
+      <li> GET (logged) guitars/products?style=&page= </li>
       <li> GET (logged) guitars/details/:idGuitar </li>
-      <li> GET (logged) /guitars/:page </li>
       <li> POST (logged and Admin) /guitars/create </li>
       <li> PATCH (logged and Admin) /guitars/edit/:idGuitar </li>
       <li> DELETE (logged and Admin) /guitars/delete/:idGuitar </li>
