@@ -3,11 +3,12 @@ import { NextFunction, Request, Response } from 'express';
 import { UserStructure } from '../entities/user.model';
 import { Repo } from '../repositories/repo.interface';
 import { Auth } from '../helpers/auth.js';
+import { GuitarStructure } from '../entities/guitar.model';
 
 jest.mock('../helpers/auth.js');
 
 describe('Given the controller UsersController', () => {
-  const mockRepo = {
+  const mockUserRepo = {
     read: jest.fn(),
     readId: jest.fn(),
     create: jest.fn(),
@@ -16,7 +17,9 @@ describe('Given the controller UsersController', () => {
     search: jest.fn(),
   } as unknown as Repo<UserStructure>;
 
-  const controller = new UsersController(mockRepo);
+  const mockGuitarRepo = {} as unknown as Repo<GuitarStructure>;
+
+  const controller = new UsersController(mockUserRepo, mockGuitarRepo);
 
   const resp = {
     json: jest.fn(),
@@ -35,7 +38,7 @@ describe('Given the controller UsersController', () => {
       } as unknown as Request;
 
       await controller.register(req, resp, next);
-      expect(mockRepo.create).toHaveBeenCalled();
+      expect(mockUserRepo.create).toHaveBeenCalled();
       expect(resp.status).toHaveBeenCalled();
       expect(resp.json).toHaveBeenCalled();
     });
@@ -72,7 +75,7 @@ describe('Given the controller UsersController', () => {
         },
       } as unknown as Request;
 
-      (mockRepo.search as jest.Mock).mockResolvedValue(['test']);
+      (mockUserRepo.search as jest.Mock).mockResolvedValue(['test']);
 
       Auth.compare = jest.fn().mockResolvedValue(true);
 
@@ -111,7 +114,7 @@ describe('Given the controller UsersController', () => {
         },
       } as unknown as Request;
 
-      (mockRepo.search as jest.Mock).mockResolvedValue([]);
+      (mockUserRepo.search as jest.Mock).mockResolvedValue([]);
 
       await controller.login(req, resp, next);
       expect(next).toHaveBeenCalled();
@@ -125,7 +128,7 @@ describe('Given the controller UsersController', () => {
         },
       } as unknown as Request;
 
-      (mockRepo.search as jest.Mock).mockResolvedValue(['test']);
+      (mockUserRepo.search as jest.Mock).mockResolvedValue(['test']);
 
       Auth.compare = jest.fn().mockResolvedValue(false);
 

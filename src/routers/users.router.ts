@@ -27,3 +27,9 @@ usersRouter.patch(
   Interceptors.logged,
   controller.addGuitar.bind(controller)
 );
+
+usersRouter.patch(
+  '/remove/cart/:idGuitar',
+  Interceptors.logged,
+  controller.removeGuitar.bind(controller)
+);

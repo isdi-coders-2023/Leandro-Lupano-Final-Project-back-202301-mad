@@ -126,6 +126,9 @@ export class UsersController {
 
       const guitarToAdd = await this.guitarsRepo.readId(req.params.idGuitar);
 
+      if (!guitarToAdd)
+        throw new HTTPError(404, 'Not found', 'Not found guitar ID');
+
       if (actualUser.myGuitars.find((item) => item.id === guitarToAdd.id))
         throw new HTTPError(
           405,
@@ -134,6 +137,41 @@ export class UsersController {
         );
 
       actualUser.myGuitars.push(guitarToAdd);
+
+      await this.usersRepo.update(actualUser);
+
+      resp.json({
+        results: [actualUser],
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async removeGuitar(
+    req: RequestWithToken,
+    resp: Response,
+    next: NextFunction
+  ) {
+    try {
+      debug('removeGuitar method');
+
+      if (!req.tokenInfo)
+        throw new HTTPError(498, 'Token not found', 'Token not found');
+
+      const actualUser = await this.usersRepo.readId(req.tokenInfo.id);
+
+      if (!req.params.idGuitar)
+        throw new HTTPError(404, 'Not found', 'Not found guitar ID in params');
+
+      const guitarToRemove = await this.guitarsRepo.readId(req.params.idGuitar);
+
+      if (!guitarToRemove)
+        throw new HTTPError(404, 'Not found', 'Not found guitar ID');
+
+      actualUser.myGuitars = actualUser.myGuitars.filter(
+        (item) => item.id !== guitarToRemove.id
+      );
 
       await this.usersRepo.update(actualUser);
 
