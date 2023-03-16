@@ -5,19 +5,25 @@ import { NextFunction, Request, Response } from 'express';
 import { HTTPError } from '../errors/errors.js';
 import { Auth } from '../helpers/auth.js';
 import { TokenPayload } from '../helpers/token.payload.interface';
+import { RequestWithToken } from '../interceptors/interceptors';
+import { GuitarStructure } from '../entities/guitar.model';
 
 const debug = createDebug('GW:users-controller');
 
 export class UsersController {
-  constructor(public usersRepo: Repo<UserStructure>) {
+  constructor(
+    public usersRepo: Repo<UserStructure>,
+    public guitarsRepo: Repo<GuitarStructure>
+  ) {
     this.usersRepo = usersRepo;
+    this.guitarsRepo = guitarsRepo;
 
     debug('users-controller-instanced');
   }
 
   async register(req: Request, resp: Response, next: NextFunction) {
     try {
-      debug('post-register-method');
+      debug('register-method');
 
       if (!req.body.username || !req.body.password)
         throw new HTTPError(401, 'Unauthorized', 'Invalid username o password');
@@ -40,7 +46,7 @@ export class UsersController {
 
   async login(req: Request, resp: Response, next: NextFunction) {
     try {
-      debug('post-login-method');
+      debug('login-method');
 
       if (!req.body.username || !req.body.password)
         throw new HTTPError(
@@ -71,6 +77,108 @@ export class UsersController {
       resp.status(202);
       resp.json({
         results: [{ token }],
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getId(req: RequestWithToken, resp: Response, next: NextFunction) {
+    try {
+      debug('getId-method');
+
+      if (!req.tokenInfo)
+        throw new HTTPError(498, 'Token not found', 'Token not found');
+
+      if (!req.params.idUser)
+        throw new HTTPError(404, 'Not found', 'Not found user ID in params');
+
+      if (req.tokenInfo.id !== req.params.idUser)
+        throw new HTTPError(
+          401,
+          'Unauthorized',
+          'The ID from params is not equal to ID from Token'
+        );
+
+      const userId = req.params.idUser;
+
+      const data = await this.usersRepo.readId(userId);
+
+      resp.status(202);
+      resp.json({
+        results: [data],
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async addGuitar(req: RequestWithToken, resp: Response, next: NextFunction) {
+    try {
+      debug('addGuitar method');
+
+      if (!req.tokenInfo)
+        throw new HTTPError(498, 'Token not found', 'Token not found');
+
+      const actualUser = await this.usersRepo.readId(req.tokenInfo.id);
+
+      if (!req.params.idGuitar)
+        throw new HTTPError(404, 'Not found', 'Not found guitar ID in params');
+
+      const guitarToAdd = await this.guitarsRepo.readId(req.params.idGuitar);
+
+      if (!guitarToAdd)
+        throw new HTTPError(404, 'Not found', 'Not found guitar ID');
+
+      if (actualUser.myGuitars.find((item) => item.id === guitarToAdd.id))
+        throw new HTTPError(
+          405,
+          'Not allowed',
+          'This guitar is already added as MyGuitars'
+        );
+
+      actualUser.myGuitars.push(guitarToAdd);
+
+      await this.usersRepo.update(actualUser);
+
+      resp.status(202);
+      resp.json({
+        results: [actualUser],
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async removeGuitar(
+    req: RequestWithToken,
+    resp: Response,
+    next: NextFunction
+  ) {
+    try {
+      debug('removeGuitar method');
+
+      if (!req.tokenInfo)
+        throw new HTTPError(498, 'Token not found', 'Token not found');
+
+      const actualUser = await this.usersRepo.readId(req.tokenInfo.id);
+
+      if (!req.params.idGuitar)
+        throw new HTTPError(404, 'Not found', 'Not found guitar ID in params');
+
+      const guitarToRemove = await this.guitarsRepo.readId(req.params.idGuitar);
+
+      if (!guitarToRemove)
+        throw new HTTPError(404, 'Not found', 'Not found guitar ID');
+
+      actualUser.myGuitars = actualUser.myGuitars.filter(
+        (item) => item.id !== guitarToRemove.id
+      );
+
+      await this.usersRepo.update(actualUser);
+
+      resp.json({
+        results: [actualUser],
       });
     } catch (error) {
       next(error);

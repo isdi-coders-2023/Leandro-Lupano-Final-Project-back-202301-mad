@@ -5,9 +5,10 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "cross-env DEBUG=GW* node ./dist/index.js -w",
+    "start": "cross-env DEBUG=GW* node ./dist/index.js",
     "start:mon": "cross-env DEBUG=GW* PORT=5000 nodemon ./dist/index.js",
     "build": "tsc -w",
+    "build:prod": "tsc",
     "prebuild": "npm run copy:public",
     "copy:public": "copyfiles -u 1 src/public/**/*.* dist",
     "test": "cross-env NODE_ENV=test jest --watchAll --coverage",
