@@ -6,12 +6,12 @@ import { TokenPayload } from '../helpers/token.payload.interface.js';
 
 const debug = createDebug('GW:interceptors');
 
-export interface RequestPlus extends Request {
-  info?: TokenPayload;
+export interface RequestWithToken extends Request {
+  tokenInfo?: TokenPayload;
 }
 
 export abstract class Interceptors {
-  static logged(req: RequestPlus, _resp: Response, next: NextFunction) {
+  static logged(req: RequestWithToken, _resp: Response, next: NextFunction) {
     try {
       debug('Logged');
 
@@ -27,7 +27,7 @@ export abstract class Interceptors {
 
       const payload = Auth.verifyJWT(token);
 
-      req.info = payload;
+      req.tokenInfo = payload;
 
       next();
     } catch (error) {
@@ -35,11 +35,15 @@ export abstract class Interceptors {
     }
   }
 
-  static authorized(req: RequestPlus, _resp: Response, next: NextFunction) {
+  static authorized(
+    req: RequestWithToken,
+    _resp: Response,
+    next: NextFunction
+  ) {
     try {
       debug('Authorized');
 
-      if (!req.info)
+      if (!req.tokenInfo)
         throw new HTTPError(
           498,
           'Token not found',
@@ -49,14 +53,14 @@ export abstract class Interceptors {
       if (!req.params.id)
         throw new HTTPError(404, 'Not found', 'Not found user ID in params');
 
-      if (req.info?.id !== req.params.id)
+      if (req.tokenInfo?.id !== req.params.id)
         throw new HTTPError(
           401,
           'Unauthorized',
           'The ID from params is not equal to ID from Token'
         );
 
-      req.body.id = req.info?.id;
+      req.body.id = req.tokenInfo?.id;
 
       next();
     } catch (error) {
