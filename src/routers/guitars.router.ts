@@ -11,8 +11,6 @@ export const guitarsRouter = router();
 const guitarsRepo = new GuitarsMongoRepo();
 const controller = new GuitarsController(guitarsRepo);
 
-guitarsRouter.post('/create', controller.post.bind(controller));
-
 guitarsRouter.get(
   '/products',
   Interceptors.logged,
@@ -23,4 +21,22 @@ guitarsRouter.get(
   '/details/:idGuitar',
   Interceptors.logged,
   controller.getId.bind(controller)
+);
+
+guitarsRouter.post(
+  '/create',
+  Interceptors.logged,
+  controller.post.bind(controller)
+);
+
+guitarsRouter.patch(
+  '/edit/:idGuitar',
+  Interceptors.logged,
+  controller.edit.bind(controller)
+);
+
+guitarsRouter.delete(
+  '/delete/:idGuitar',
+  Interceptors.logged,
+  controller.delete.bind(controller)
 );

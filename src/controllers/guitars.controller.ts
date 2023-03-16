@@ -103,4 +103,42 @@ export class GuitarsController {
       next(error);
     }
   }
+
+  async edit(req: Request, resp: Response, next: NextFunction) {
+    try {
+      debug('edit-method');
+
+      if (!req.params.idGuitar)
+        throw new HTTPError(404, 'Not found', 'Not found guitar ID in params');
+
+      req.body.id = req.params.idGuitar;
+
+      const guitarData = await this.guitarsRepo.update(req.body);
+
+      resp.status(201);
+      resp.json({
+        results: [guitarData],
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async delete(req: Request, resp: Response, next: NextFunction) {
+    try {
+      debug('delete-method');
+
+      if (!req.params.idGuitar)
+        throw new HTTPError(404, 'Not found', 'Not found guitar ID in params');
+
+      await this.guitarsRepo.erase(req.params.idGuitar);
+
+      resp.status(201);
+      resp.json({
+        results: [],
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
