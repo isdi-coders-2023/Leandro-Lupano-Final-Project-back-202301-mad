@@ -4,7 +4,7 @@ import { GuitarStructure } from '../entities/guitar.model';
 import { Repo } from '../repositories/repo.interface';
 
 describe('Given the controller GuitarsController', () => {
-  const mockRepo = {
+  const mockGuitarRepo = {
     read: jest.fn(),
     readId: jest.fn(),
     create: jest.fn(),
@@ -13,7 +13,7 @@ describe('Given the controller GuitarsController', () => {
     search: jest.fn(),
   } as unknown as Repo<GuitarStructure>;
 
-  const controller = new GuitarsController(mockRepo);
+  const controller = new GuitarsController(mockGuitarRepo);
 
   const resp = {
     json: jest.fn(),
@@ -27,25 +27,111 @@ describe('Given the controller GuitarsController', () => {
       const req = {
         body: {
           brand: 'test',
-          modelGuitar: 'test',
+          style: 'Electric',
         },
       } as unknown as Request;
 
       await controller.post(req, resp, next);
-      expect(mockRepo.create).toHaveBeenCalled();
+      expect(mockGuitarRepo.create).toHaveBeenCalled();
       expect(resp.status).toHaveBeenCalled();
       expect(resp.json).toHaveBeenCalled();
+    });
+
+    test('Then if there is req.body.style is not Electric or Acoustic, it should be catch the error and next function have been called', async () => {
+      const req = {
+        body: {
+          style: 'test',
+        },
+      } as unknown as Request;
+
+      await controller.post(req, resp, next);
+      expect(next).toHaveBeenCalled();
     });
 
     test('Then if there is no guitar info in the req.body, it should be catch the error and next function have been called', async () => {
       const req = {
         body: {
-          password: 'test',
+          style: 'test',
         },
       } as unknown as Request;
 
-      (mockRepo.create as jest.Mock).mockRejectedValueOnce('No guitar info');
+      (mockGuitarRepo.create as jest.Mock).mockRejectedValueOnce(
+        'No guitar info'
+      );
       await controller.post(req, resp, next);
+      expect(next).toHaveBeenCalled();
+    });
+  });
+
+  describe('When Get method is called', () => {
+    (mockGuitarRepo.read as jest.Mock).mockResolvedValue([
+      { id: '1' },
+      { id: '2' },
+      { id: '3' },
+    ]);
+
+    (mockGuitarRepo.search as jest.Mock).mockResolvedValue([
+      { id: '1' },
+      { id: '2' },
+      { id: '3' },
+    ]);
+
+    test('Then if the guitar information is completed, it should return the resp.status and resp.json', async () => {
+      const req = {
+        query: {
+          page: '1',
+          style: 'Electric',
+        },
+      } as unknown as Request;
+
+      await controller.get(req, resp, next);
+      expect(resp.status).toHaveBeenCalled();
+      expect(resp.json).toHaveBeenCalled();
+    });
+
+    test('Then if there is no information in req.query, it should return the resp.status and resp.json with the req.query default values', async () => {
+      const req = {
+        query: {
+          page: undefined,
+          style: undefined,
+        },
+      } as unknown as Request;
+
+      await controller.get(req, resp, next);
+      expect(resp.status).toHaveBeenCalled();
+      expect(resp.json).toHaveBeenCalled();
+    });
+
+    test('Then if req.body.page is less than 1, it should be catch the error and next function have been called', async () => {
+      const req = {
+        query: {
+          page: '0',
+        },
+      } as unknown as Request;
+
+      await controller.get(req, resp, next);
+      expect(next).toHaveBeenCalled();
+    });
+
+    test('Then if req.body.page is more than 5, it should be catch the error and next function have been called', async () => {
+      const req = {
+        query: {
+          page: '6',
+        },
+      } as unknown as Request;
+
+      await controller.get(req, resp, next);
+      expect(next).toHaveBeenCalled();
+    });
+
+    test('Then if req.body.style is not Electric or Acoustic or All, it should be catch the error and next function have been called', async () => {
+      const req = {
+        query: {
+          style: 'test',
+        },
+      } as unknown as Request;
+
+      await controller.get(req, resp, next);
       expect(next).toHaveBeenCalled();
     });
   });

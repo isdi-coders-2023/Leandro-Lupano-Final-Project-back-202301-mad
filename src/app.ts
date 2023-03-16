@@ -30,25 +30,24 @@ app.get('*', (_req, resp) => {
   resp.send(
     `
     <h1>Welcome to the Guitar World server</h1>
-    <p>Endpoints:</p>
+    <h2>Endpoints:</h2>
     <br>
-    <p> /users </p>
+    <h3> /users </h3>
     <ul>
-      <li> POST /users/register" </li>
-      <li> POST /users/login" </li>
-      <li> GET (logged) /users/:userId" </li>
-      <li> PATCH (logged) /users/add/cart/:guitarId" </li>
-      <li> PATCH (logged) /users/remove/cart/:guitarId" </li>
+      <li> POST /users/register </li>
+      <li> POST /users/login </li>
+      <li> GET (logged) /users/:idUser </li>
+      <li> PATCH (logged) /users/add/cart/:idGuitar </li>
+      <li> PATCH (logged) /users/remove/cart/:idGuitar </li>
     </ul>
       <br>
-    <p> /guitars </p>
+    <h4> /guitars </h4>
     <ul>
-      <li> GET (logged) guitars/style/:guitarStyle </li>
-      <li> GET (logged) guitars/details/:guitarId </li>
-      <li> GET (logged) /guitars/:page" </li>
+      <li> GET (logged) guitars/products?style=&page= </li>
+      <li> GET (logged) guitars/details/:idGuitar </li>
       <li> POST (logged and Admin) /guitars/create </li>
-      <li> PATCH (logged and Admin) /guitars/edit/:guitarId </li>
-      <li> DELETE (logged and Admin) /guitars/delete/:guitarId </li>
+      <li> PATCH (logged and Admin) /guitars/edit/:idGuitar </li>
+      <li> DELETE (logged and Admin) /guitars/delete/:idGuitar </li>
     </ul>
   `
   );
