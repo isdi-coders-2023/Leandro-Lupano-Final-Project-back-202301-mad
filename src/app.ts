@@ -27,10 +27,33 @@ app.use('/guitars', guitarsRouter);
 app.use(errorsMiddleware);
 
 app.use('*', (_req, resp, next) => {
-  resp
-    .status(404)
-    .send(
-      `<h1>Sorry, the path is not valid. Please, check the information.<h1>`
-    );
+  resp.status(404).send(
+    `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    <title>Guitar World Server</title>
+  </head>
+  <body>
+    <h1>Welcome to the Guitar World server</h1>
+    <p>Endpoints:</p>
+    <ul>
+      <li>
+        <a href="http://localhost:5000/users/register" style="cursor: pointer"
+          >Register</a
+        >
+      </li>
+      <li>
+        <a href="http://localhost:5000/users/login" style="cursor: pointer"
+          >Login</a
+        >
+      </li>
+    </ul>
+  </body>
+</html>`
+  );
   next();
 });
