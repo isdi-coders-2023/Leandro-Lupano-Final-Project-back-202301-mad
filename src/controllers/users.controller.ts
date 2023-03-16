@@ -104,6 +104,7 @@ export class UsersController {
 
       const data = await this.usersRepo.readId(userId);
 
+      resp.status(202);
       resp.json({
         results: [data],
       });
@@ -140,6 +141,7 @@ export class UsersController {
 
       await this.usersRepo.update(actualUser);
 
+      resp.status(202);
       resp.json({
         results: [actualUser],
       });
