@@ -39,7 +39,7 @@ export class GuitarsController {
 
   async get(req: Request, resp: Response, next: NextFunction) {
     try {
-      debug('getForStyle-method');
+      debug('get-method');
 
       const pageString = req.query.page || '1';
 
@@ -80,6 +80,24 @@ export class GuitarsController {
       resp.status(201);
       resp.json({
         results: guitarsData,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getId(req: Request, resp: Response, next: NextFunction) {
+    try {
+      debug('getId-method');
+
+      if (!req.params.idGuitar)
+        throw new HTTPError(404, 'Not found', 'Not found guitar ID in params');
+
+      const guitarData = await this.guitarsRepo.readId(req.params.idGuitar);
+
+      resp.status(201);
+      resp.json({
+        results: [guitarData],
       });
     } catch (error) {
       next(error);

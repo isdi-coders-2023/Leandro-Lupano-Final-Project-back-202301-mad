@@ -41,7 +41,7 @@ app.get('*', (_req, resp) => {
       <li> PATCH (logged) /users/remove/cart/:idGuitar </li>
     </ul>
       <br>
-    <h4> /guitars </h4>
+    <h3> /guitars </h3>
     <ul>
       <li> GET (logged) guitars/products?style=&page= </li>
       <li> GET (logged) guitars/details/:idGuitar </li>

@@ -18,3 +18,9 @@ guitarsRouter.get(
   Interceptors.logged,
   controller.get.bind(controller)
 );
+
+guitarsRouter.get(
+  '/details/:idGuitar',
+  Interceptors.logged,
+  controller.getId.bind(controller)
+);
