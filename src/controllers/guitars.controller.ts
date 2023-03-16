@@ -34,9 +34,6 @@ export class GuitarsController {
     try {
       debug('getForStyle-method');
 
-      // TEMPORAL:
-      // const guitarStyleFilter = req.params.guitarStyle;
-
       const pageString = req.query.page || '1';
 
       const pageNumber = Number(pageString);
@@ -48,9 +45,9 @@ export class GuitarsController {
           'The page number in query params is not correct'
         );
 
-      const style = req.query.style || 'all';
+      const style = req.query.style || 'All';
 
-      if (style !== 'electric' && style !== 'acoustic' && style !== 'all')
+      if (style !== 'Electric' && style !== 'Acoustic' && style !== 'All')
         throw new HTTPError(
           400,
           'Wrong style type',
@@ -59,7 +56,7 @@ export class GuitarsController {
 
       let guitarsFiltered: GuitarStructure[];
 
-      if (style === 'all') {
+      if (style === 'All') {
         guitarsFiltered = await this.guitarsRepo.read();
       } else {
         guitarsFiltered = await this.guitarsRepo.search({
@@ -69,8 +66,8 @@ export class GuitarsController {
       }
 
       const guitarsData = guitarsFiltered.slice(
-        (pageNumber - 1) * 6,
-        pageNumber * 6
+        (pageNumber - 1) * 5,
+        pageNumber * 5
       );
 
       resp.status(201);
