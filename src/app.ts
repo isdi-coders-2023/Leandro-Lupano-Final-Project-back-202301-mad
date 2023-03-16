@@ -26,34 +26,30 @@ app.use('/guitars', guitarsRouter);
 
 app.use(errorsMiddleware);
 
-app.use('*', (_req, resp, next) => {
-  resp.status(404).send(
-    `<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
-    <title>Guitar World Server</title>
-  </head>
-  <body>
+app.get('*', (_req, resp) => {
+  resp.send(
+    `
     <h1>Welcome to the Guitar World server</h1>
     <p>Endpoints:</p>
+    <br>
+    <p> /users </p>
     <ul>
-      <li>
-        <a href="http://localhost:5000/users/register" style="cursor: pointer"
-          >Register</a
-        >
-      </li>
-      <li>
-        <a href="http://localhost:5000/users/login" style="cursor: pointer"
-          >Login</a
-        >
-      </li>
+      <li> POST /users/register" </li>
+      <li> POST /users/login" </li>
+      <li> GET (logged) /users/:userId" </li>
+      <li> PATCH (logged) /users/add/cart/:guitarId" </li>
+      <li> PATCH (logged) /users/remove/cart/:guitarId" </li>
     </ul>
-  </body>
-</html>`
+      <br>
+    <p> /guitars </p>
+    <ul>
+      <li> GET (logged) guitars/style/:guitarStyle </li>
+      <li> GET (logged) guitars/details/:guitarId </li>
+      <li> GET (logged) /guitars/:page" </li>
+      <li> POST (logged and Admin) /guitars/create </li>
+      <li> PATCH (logged and Admin) /guitars/edit/:guitarId </li>
+      <li> DELETE (logged and Admin) /guitars/delete/:guitarId </li>
+    </ul>
+  `
   );
-  next();
 });
