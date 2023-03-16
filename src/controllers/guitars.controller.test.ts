@@ -135,4 +135,29 @@ describe('Given the controller GuitarsController', () => {
       expect(next).toHaveBeenCalled();
     });
   });
+
+  describe('When getId method is called', () => {
+    test('Then if the user information is completed, it should return the resp.status and resp.json', async () => {
+      const req = {
+        params: {
+          idGuitar: '1',
+        },
+      } as unknown as Request;
+
+      await controller.getId(req, resp, next);
+      expect(resp.status).toHaveBeenCalled();
+      expect(resp.json).toHaveBeenCalled();
+    });
+
+    test('Then if there is no the guitar id in the req.params, it should be catch the error and next function have been called', async () => {
+      const req = {
+        params: {
+          idGuitar: undefined,
+        },
+      } as unknown as Request;
+
+      await controller.getId(req, resp, next);
+      expect(next).toHaveBeenCalled();
+    });
+  });
 });
