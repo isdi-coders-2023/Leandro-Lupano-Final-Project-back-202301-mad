@@ -4,7 +4,6 @@ import mongoose from 'mongoose';
 import { app } from '../app.js';
 import { dbConnect } from '../db/db.connect.js';
 import { UserModel } from '../repositories/users.mongo.model.js';
-import { Auth } from '../helpers/auth.js';
 import { TokenPayload } from '../helpers/token.payload.interface.js';
 
 const setCollection = async () => {
