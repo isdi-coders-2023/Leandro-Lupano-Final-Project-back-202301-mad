@@ -48,7 +48,7 @@ describe('Given the controller GuitarsController', () => {
       expect(next).toHaveBeenCalled();
     });
 
-    test('Then if there is no guitar info in the req.body, it should be catch the error and next function have been called', async () => {
+    test('Then if the guitar repo create resolved with Error, it should be catch the error and next function have been called', async () => {
       const req = {
         body: {
           style: 'test',
