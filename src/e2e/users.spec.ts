@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import request from 'supertest';
 import mongoose from 'mongoose';
 import { app } from '../app.js';
@@ -24,10 +25,10 @@ const setCollection = async () => {
     },
   ];
 
-  await UserModel.deleteMany();
+  await UserModel.deleteMany().exec();
   await UserModel.insertMany(usersMock);
 
-  const data = await UserModel.find();
+  const data = await UserModel.find().exec();
 
   const usersIdsTest = [data[0].id, data[1].id];
 
@@ -36,7 +37,9 @@ const setCollection = async () => {
 
 describe('Given the App with /users path and connected to MongoDB', () => {
   let payload: TokenPayload;
-  let token: string;
+
+  // TEMPORAL:
+  // let token: string;
 
   beforeEach(async () => {
     await dbConnect();
@@ -48,7 +51,8 @@ describe('Given the App with /users path and connected to MongoDB', () => {
       role: 'Admin',
     };
 
-    token = Auth.createJWT(payload);
+    // TEMPORAL:
+    // token = Auth.createJWT(payload);
   });
 
   afterEach(async () => {
