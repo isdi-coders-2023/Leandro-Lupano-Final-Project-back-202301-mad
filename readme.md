@@ -9,7 +9,7 @@ Backend of a guitar's e-commerce project developed with [Node.js](https://nodejs
 <div>
   <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Node.js_logo.svg/2560px-Node.js_logo.svg.png" title="NodeJS" alt="NodeJS" width="80" height="50"/>&nbsp;
   <img src="https://cdn.cdnlogo.com/logos/e/23/express.svg" title="Express" alt="Express" width="80" height="60"/>&nbsp;
-  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/MongoDB_Logo.svg/2560px-MongoDB_Logo.svg.png" title="MongoDB" **alt="MongoDB" width="120" height="50"/>&nbsp;
+  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/MongoDB_Logo.svg/2560px-MongoDB_Logo.svg.png" title="MongoDB" **alt="MongoDB" width="130" height="50"/>&nbsp;
 </div>
 <br>
 <br>
