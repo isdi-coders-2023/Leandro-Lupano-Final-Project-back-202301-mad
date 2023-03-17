@@ -73,5 +73,5 @@ Backend of a guitar's e-commerce project developed with [Node.js](https://nodejs
 
 <br>
 <br>
-.
+
 ![guitar-world-logo](https://t3.ftcdn.net/jpg/01/70/12/02/360_F_170120287_OqdsKQSUsa5ro0uCOMVEteoZkaMJQvue.webp)

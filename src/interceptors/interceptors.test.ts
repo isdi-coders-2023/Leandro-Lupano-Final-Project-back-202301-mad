@@ -35,6 +35,39 @@ describe('Given Interceptors class', () => {
     });
   });
 
+  describe('When the Admin method is called', () => {
+    test('Then if the req.tokenInfo.role is Admin, next function should be called', () => {
+      const req = {
+        tokenInfo: {
+          role: 'Admin',
+        },
+      } as unknown as RequestWithToken;
+
+      Interceptors.admin(req, resp, next);
+      expect(next).toHaveBeenCalled();
+    });
+
+    test('Then if there is no req.tokenInfo, it should be catch and call next function', () => {
+      const req = {
+        tokenInfo: undefined,
+      } as unknown as RequestWithToken;
+
+      Interceptors.admin(req, resp, next);
+      expect(next).toHaveBeenCalled();
+    });
+
+    test('Then if the req.tokenInfo.role is NOT Admin, it should be catch and call next function', () => {
+      const req = {
+        tokenInfo: {
+          role: 'User',
+        },
+      } as unknown as RequestWithToken;
+
+      Interceptors.admin(req, resp, next);
+      expect(next).toHaveBeenCalled();
+    });
+  });
+
   describe('When the Authorized method is called', () => {
     test('Then if the user information is completed, it should return the resp.json', () => {
       const req = {

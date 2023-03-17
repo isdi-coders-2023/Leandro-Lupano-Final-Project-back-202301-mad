@@ -26,17 +26,20 @@ guitarsRouter.get(
 guitarsRouter.post(
   '/create',
   Interceptors.logged,
+  Interceptors.admin,
   controller.post.bind(controller)
 );
 
 guitarsRouter.patch(
   '/edit/:idGuitar',
   Interceptors.logged,
+  Interceptors.admin,
   controller.edit.bind(controller)
 );
 
 guitarsRouter.delete(
   '/delete/:idGuitar',
   Interceptors.logged,
+  Interceptors.admin,
   controller.delete.bind(controller)
 );

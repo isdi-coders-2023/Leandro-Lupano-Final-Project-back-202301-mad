@@ -13,7 +13,7 @@ export interface RequestWithToken extends Request {
 export abstract class Interceptors {
   static logged(req: RequestWithToken, _resp: Response, next: NextFunction) {
     try {
-      debug('Logged');
+      debug('logged interceptor');
 
       const authHeader = req.get('Authorization');
 
@@ -28,6 +28,26 @@ export abstract class Interceptors {
       const payload = Auth.verifyJWT(token);
 
       req.tokenInfo = payload;
+
+      next();
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static admin(req: RequestWithToken, _resp: Response, next: NextFunction) {
+    try {
+      debug('admin interceptor');
+
+      if (!req.tokenInfo)
+        throw new HTTPError(
+          498,
+          'Token not found',
+          'Token not found in authorized interceptor'
+        );
+
+      if (req.tokenInfo.role !== 'Admin')
+        throw new HTTPError(401, 'Unauthorized', 'The user role is not Admin');
 
       next();
     } catch (error) {
