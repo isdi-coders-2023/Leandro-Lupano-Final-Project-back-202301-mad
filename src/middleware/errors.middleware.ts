@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextFunction, Request, Response } from 'express';
 import { CustomError, HTTPError } from '../errors/errors.js';
 import createDebug from 'debug';
@@ -9,7 +10,6 @@ export const errorsMiddleware = (
   error: CustomError | Error,
   _req: Request,
   resp: Response,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _next: NextFunction
 ) => {
   let status = 500;
