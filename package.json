@@ -14,6 +14,7 @@
     "copy:public": "copyfiles -u 1 src/public/**/*.* dist",
     "test": "cross-env NODE_ENV=test jest --watchAll --coverage",
     "test:prod": "cross-env NODE_ENV=test jest --watchAll --coverage --watchAll=false --passWithNoTests",
+    "super:test": "cross-env NODE_ENV=test jest --watchAll --coverage --runInBand",
     "prepare": "husky install"
   },
   "keywords": [
