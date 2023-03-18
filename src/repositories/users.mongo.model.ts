@@ -30,6 +30,10 @@ const userSchema = new Schema<UserStructure>({
       ref: 'Guitar',
     },
   ],
+
+  token: {
+    type: String,
+  },
 });
 
 userSchema.set('toJSON', {

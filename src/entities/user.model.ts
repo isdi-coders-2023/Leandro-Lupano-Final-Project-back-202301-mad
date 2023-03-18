@@ -7,4 +7,5 @@ export type UserStructure = {
   password: string;
   role: string;
   myGuitars: GuitarStructure[];
+  token?: string;
 };

@@ -78,9 +78,12 @@ describe('Given the controller UsersController', () => {
         },
       } as unknown as Request;
 
-      (mockUserRepo.search as jest.Mock).mockResolvedValue(['test']);
+      (mockUserRepo.search as jest.Mock).mockResolvedValue([
+        { username: 'test' },
+      ]);
 
       Auth.compare = jest.fn().mockResolvedValue(true);
+      Auth.createJWT = jest.fn().mockResolvedValue('test');
 
       await controller.login(req, resp, next);
       expect(resp.status).toHaveBeenCalled();
