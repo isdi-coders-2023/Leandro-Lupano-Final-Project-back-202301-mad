@@ -61,20 +61,17 @@ export class GuitarsController {
           'The style in query params is not correct'
         );
 
-      let guitarsFiltered: GuitarStructure[];
-
-      if (style === 'All') {
-        guitarsFiltered = await this.guitarsRepo.read();
-      } else {
-        guitarsFiltered = await this.guitarsRepo.search({
-          key: 'style',
-          value: style,
-        });
-      }
+      const guitarsFiltered: GuitarStructure[] =
+        style === 'All'
+          ? await this.guitarsRepo.read()
+          : await this.guitarsRepo.search({
+              key: 'style',
+              value: style,
+            });
 
       const guitarsData = guitarsFiltered.slice(
-        (pageNumber - 1) * 5,
-        pageNumber * 5
+        (pageNumber - 1) * 4,
+        pageNumber * 4
       );
 
       resp.status(201);
