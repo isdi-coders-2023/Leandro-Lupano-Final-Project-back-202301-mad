@@ -53,7 +53,7 @@ Backend of a guitar's e-commerce project developed with [Node.js](https://nodejs
 - **Guitar:**
   - id: `string`
   - brand: `string`
-  - model: `string`
+  - modelGuitar: `string`
   - picture: `string`
   - style: `string`
   - material: `string`
