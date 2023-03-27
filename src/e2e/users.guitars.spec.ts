@@ -41,7 +41,7 @@ const setGuitarCollection = async () => {
       brand: 'testBrand1',
       modelGuitar: 'testModel1',
       picture: 'testPicture1',
-      style: 'testStyle1',
+      style: 'Electric',
       material: 'testMaterial1',
       price: 1,
       description: 'testDescription1',
@@ -50,7 +50,7 @@ const setGuitarCollection = async () => {
       brand: 'testBrand2',
       modelGuitar: 'testModel2',
       picture: 'testPicture2',
-      style: 'testStyle2',
+      style: 'Acoustic',
       material: 'testMaterial2',
       price: 2,
       description: 'testDescription2',
@@ -390,6 +390,93 @@ describe('Given the App with /users path and connected to MongoDB', () => {
       const response = await request(app)
         .patch(urlTest)
         .set('Authorization', `Bearer ${tokenAdminTest}`);
+
+      expect(response.status).toBe(400);
+    });
+  });
+
+  describe('When the Get method to guitars/products path is performed', () => {
+    test('Then if the information is OK, the status code should be 202', async () => {
+      const loginAdminMock = {
+        username: 'supertest1',
+        password: '12345',
+      };
+
+      const urlTest = `/guitars/products`;
+
+      await request(app).post('/users/login').send(loginAdminMock);
+
+      const response = await request(app)
+        .get(urlTest)
+        .set('Authorization', `Bearer ${tokenAdminTest}`);
+
+      expect(response.status).toBe(201);
+    });
+
+    test('Then if the information is OK (with query page and style), the status code should be 202', async () => {
+      const loginAdminMock = {
+        username: 'supertest1',
+        password: '12345',
+      };
+
+      const urlTest = `/guitars/products?style=Electric&page=2`;
+
+      await request(app).post('/users/login').send(loginAdminMock);
+
+      const response = await request(app)
+        .get(urlTest)
+        .set('Authorization', `Bearer ${tokenAdminTest}`);
+
+      expect(response.status).toBe(201);
+    });
+
+    test('Then if the information is NOK (page more than 5), the status code should be 400', async () => {
+      const loginUserMock = {
+        username: 'supertest2',
+        password: '12345',
+      };
+
+      const urlTest = `/guitars/products?style=Electric&page=10`;
+
+      await request(app).post('/users/login').send(loginUserMock);
+
+      const response = await request(app)
+        .get(urlTest)
+        .set('Authorization', `Bearer ${tokenUserTest}`);
+
+      expect(response.status).toBe(400);
+    });
+
+    test('Then if the information is NOK (page less than 1), the status code should be 400', async () => {
+      const loginUserMock = {
+        username: 'supertest2',
+        password: '12345',
+      };
+
+      const urlTest = `/guitars/products?style=Electric&page=0`;
+
+      await request(app).post('/users/login').send(loginUserMock);
+
+      const response = await request(app)
+        .get(urlTest)
+        .set('Authorization', `Bearer ${tokenUserTest}`);
+
+      expect(response.status).toBe(400);
+    });
+
+    test('Then if the information is NOK (style is not Electric or Acoustic), the status code should be 400', async () => {
+      const loginUserMock = {
+        username: 'supertest2',
+        password: '12345',
+      };
+
+      const urlTest = `/guitars/products?style=Test&page=1`;
+
+      await request(app).post('/users/login').send(loginUserMock);
+
+      const response = await request(app)
+        .get(urlTest)
+        .set('Authorization', `Bearer ${tokenUserTest}`);
 
       expect(response.status).toBe(400);
     });
