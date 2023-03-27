@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import request from 'supertest';
 import mongoose from 'mongoose';
 import { app } from '../app.js';
@@ -406,6 +405,32 @@ describe('Given the App with /users path and connected to MongoDB', () => {
         .set('Authorization', `Bearer ${tokenUserTest}`);
 
       expect(response.status).toBe(400);
+    });
+  });
+
+  describe('When the Get method to guitars/details/:idGuitar path is performed', () => {
+    test('Then if the information is OK, the status code should be 202', async () => {
+      adminLogin();
+
+      const urlTest = `/guitars/details/${guitarTestId2}`;
+
+      const response = await request(app)
+        .get(urlTest)
+        .set('Authorization', `Bearer ${tokenAdminTest}`);
+
+      expect(response.status).toBe(201);
+    });
+
+    test('Then if the information is NOK (not idGuitar in params), the status code should be 404', async () => {
+      adminLogin();
+
+      const urlTest = `/guitars/details/`;
+
+      const response = await request(app)
+        .get(urlTest)
+        .set('Authorization', `Bearer ${tokenAdminTest}`);
+
+      expect(response.status).toBe(404);
     });
   });
 });
