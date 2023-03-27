@@ -174,6 +174,74 @@ describe('Given the App with /users path and connected to MongoDB', () => {
     });
   });
 
+  describe('When the Get method to users/:idUser path is performed', () => {
+    test('Then if the information is OK, the status code should be 202', async () => {
+      const loginAdminMock = {
+        username: 'supertest1',
+        password: '12345',
+      };
+
+      const urlTest = `/users/${userAdminToken.id}`;
+
+      await request(app).post('/users/login').send(loginAdminMock);
+
+      const response = await request(app)
+        .get(urlTest)
+        .set('Authorization', `Bearer ${tokenAdminTest}`);
+
+      expect(response.status).toBe(202);
+    });
+
+    test('Then if the information is NOK (no tokenInfo), the status code should be 498', async () => {
+      const loginUserMock = {
+        username: 'supertest2',
+        password: '12345',
+      };
+
+      const urlTest = `/users/${userAdminToken.id}`;
+
+      await request(app).post('/users/login').send(loginUserMock);
+
+      const response = await request(app).get(urlTest);
+
+      expect(response.status).toBe(498);
+    });
+
+    test('Then if the information is NOK (no idUser in params), the status code should be 404', async () => {
+      const loginUserMock = {
+        username: 'supertest2',
+        password: '12345',
+      };
+
+      const urlTest = `/users/`;
+
+      await request(app).post('/users/login').send(loginUserMock);
+
+      const response = await request(app)
+        .get(urlTest)
+        .set('Authorization', `Bearer ${tokenUserTest}`);
+
+      expect(response.status).toBe(404);
+    });
+
+    test('Then if the information is NOK (the token id is not equal to params id), the status code should be 400', async () => {
+      const loginAdminMock = {
+        username: 'supertest1',
+        password: '12345',
+      };
+
+      const urlTest = `/users/${userUserToken.id}`;
+
+      await request(app).post('/users/login').send(loginAdminMock);
+
+      const response = await request(app)
+        .get(urlTest)
+        .set('Authorization', `Bearer ${tokenAdminTest}`);
+
+      expect(response.status).toBe(401);
+    });
+  });
+
   describe('When the Patch method to users/add/cart/:idGuitar path is performed', () => {
     test('Then if the information is OK, the status code should be 202', async () => {
       const loginAdminMock = {
@@ -256,6 +324,74 @@ describe('Given the App with /users path and connected to MongoDB', () => {
         .set('Authorization', `Bearer ${tokenAdminTest}`);
 
       expect(response.status).toBe(405);
+    });
+  });
+
+  describe('When the Patch method to users/remove/cart/:idGuitar path is performed', () => {
+    test('Then if the information is OK, the status code should be 202', async () => {
+      const loginAdminMock = {
+        username: 'supertest1',
+        password: '12345',
+      };
+
+      const urlTest = `/users/remove/cart/${guitarTestId1}`;
+
+      await request(app).post('/users/login').send(loginAdminMock);
+
+      const response = await request(app)
+        .patch(urlTest)
+        .set('Authorization', `Bearer ${tokenAdminTest}`);
+
+      expect(response.status).toBe(202);
+    });
+
+    test('Then if the information is NOK (no tokenInfo), the status code should be 498', async () => {
+      const loginUserMock = {
+        username: 'supertest2',
+        password: '12345',
+      };
+
+      const urlTest = `/users/remove/cart/${guitarTestId1}`;
+
+      await request(app).post('/users/login').send(loginUserMock);
+
+      const response = await request(app).patch(urlTest);
+
+      expect(response.status).toBe(498);
+    });
+
+    test('Then if the information is NOK (no idGuitar in params), the status code should be 404', async () => {
+      const loginUserMock = {
+        username: 'supertest2',
+        password: '12345',
+      };
+
+      const urlTest = `/users/remove/cart/`;
+
+      await request(app).post('/users/login').send(loginUserMock);
+
+      const response = await request(app)
+        .patch(urlTest)
+        .set('Authorization', `Bearer ${tokenUserTest}`);
+
+      expect(response.status).toBe(404);
+    });
+
+    test('Then if the information is NOK (the idGuitar is wrong), the status code should be 400', async () => {
+      const loginAdminMock = {
+        username: 'supertest1',
+        password: '12345',
+      };
+
+      const urlTest = `/users/remove/cart/111111`;
+
+      await request(app).post('/users/login').send(loginAdminMock);
+
+      const response = await request(app)
+        .patch(urlTest)
+        .set('Authorization', `Bearer ${tokenAdminTest}`);
+
+      expect(response.status).toBe(400);
     });
   });
 });
