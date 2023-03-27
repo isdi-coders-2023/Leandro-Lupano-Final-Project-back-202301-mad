@@ -476,4 +476,60 @@ describe('Given the App with /users path and connected to MongoDB', () => {
       guitarPayloadTest.style = 'Electric';
     });
   });
+
+  describe('When the Get method to guitars/edit/:idGuitar path is performed', () => {
+    test('Then if the information is OK, the status code should be 202', async () => {
+      adminLogin();
+
+      const urlTest = `/guitars/edit/${guitarTestId2}`;
+
+      guitarPayloadTest.id = guitarTestId2;
+
+      const response = await request(app)
+        .patch(urlTest)
+        .set('Authorization', `Bearer ${tokenAdminTest}`)
+        .send(guitarPayloadTest);
+
+      expect(response.status).toBe(201);
+    });
+
+    test('Then if the information is NOK (body id is not equal to params id), the status code should be 400', async () => {
+      adminLogin();
+
+      const urlTest = `/guitars/edit/${guitarTestId1}`;
+
+      const response = await request(app)
+        .post(urlTest)
+        .set('Authorization', `Bearer ${tokenAdminTest}`)
+        .send(guitarPayloadTest);
+
+      expect(response.status).toBe(404);
+    });
+  });
+
+  describe('When the Get method to guitars/delete/:idGuitar path is performed', () => {
+    test('Then if the information is OK, the status code should be 202', async () => {
+      adminLogin();
+
+      const urlTest = `/guitars/delete/${guitarTestId2}`;
+
+      const response = await request(app)
+        .delete(urlTest)
+        .set('Authorization', `Bearer ${tokenAdminTest}`);
+
+      expect(response.status).toBe(201);
+    });
+
+    test('Then if the information is NOK (not params id), the status code should be 400', async () => {
+      adminLogin();
+
+      const urlTest = `/guitars/delete/`;
+
+      const response = await request(app)
+        .post(urlTest)
+        .set('Authorization', `Bearer ${tokenAdminTest}`);
+
+      expect(response.status).toBe(404);
+    });
+  });
 });
