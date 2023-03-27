@@ -6,6 +6,7 @@ import { UserModel } from '../repositories/users.mongo.model.js';
 import { GuitarModel } from '../repositories/guitars.mongo.model.js';
 import { TokenPayload } from '../helpers/token.payload.interface.js';
 import { Auth } from '../helpers/auth.js';
+import { GuitarStructure } from '../entities/guitar.model.js';
 
 const setUserCollection = async () => {
   const usersMock = [
@@ -102,6 +103,16 @@ describe('Given the App with /users path and connected to MongoDB', () => {
   afterAll(async () => {
     await mongoose.disconnect();
   });
+
+  const guitarPayloadTest: Partial<GuitarStructure> = {
+    brand: 'testBrand3',
+    modelGuitar: 'testModel3',
+    picture: 'testPicture3',
+    style: 'Electric',
+    material: 'testMaterial3',
+    price: 3,
+    description: 'testDescription3',
+  };
 
   const adminLogin = async () => {
     const loginAdminMock = {
@@ -431,6 +442,38 @@ describe('Given the App with /users path and connected to MongoDB', () => {
         .set('Authorization', `Bearer ${tokenAdminTest}`);
 
       expect(response.status).toBe(404);
+    });
+  });
+
+  describe('When the Get method to guitars/create path is performed', () => {
+    test('Then if the information is OK, the status code should be 202', async () => {
+      adminLogin();
+
+      const urlTest = `/guitars/create`;
+
+      const response = await request(app)
+        .post(urlTest)
+        .set('Authorization', `Bearer ${tokenAdminTest}`)
+        .send(guitarPayloadTest);
+
+      expect(response.status).toBe(201);
+    });
+
+    test('Then if the information is NOK (not correct body.style), the status code should be 400', async () => {
+      adminLogin();
+
+      const urlTest = `/guitars/create`;
+
+      guitarPayloadTest.style = 'test';
+
+      const response = await request(app)
+        .post(urlTest)
+        .set('Authorization', `Bearer ${tokenAdminTest}`)
+        .send(guitarPayloadTest);
+
+      expect(response.status).toBe(400);
+
+      guitarPayloadTest.style = 'Electric';
     });
   });
 });
