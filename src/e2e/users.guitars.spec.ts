@@ -250,59 +250,59 @@ describe('Given the App with /users path and connected to MongoDB', () => {
   });
 
   describe('When the Patch method to users/add/cart/:idGuitar path is performed', () => {
-    test('Then if the information is OK, the status code should be 202', async () => {
+    test('Then if the information is OK, the status code of addGuitar method should be 202', async () => {
       adminLogin();
 
-      const urlTest = `/users/add/cart/${guitarTestId1}`;
+      const urlTestAddCart1 = `/users/add/cart/${guitarTestId1}`;
 
       const response = await request(app)
-        .patch(urlTest)
+        .patch(urlTestAddCart1)
         .set('Authorization', `Bearer ${tokenAdminTest}`);
 
       expect(response.status).toBe(202);
     });
 
-    test('Then if the information is NOK (no tokenInfo), the status code should be 498', async () => {
+    test('Then if the information is NOK (no tokenInfo), the status code of addGuitar method should be 498', async () => {
       userLogin();
 
-      const urlTest = `/users/add/cart/${guitarTestId1}`;
+      const urlTestAddCart2 = `/users/add/cart/${guitarTestId2}`;
 
-      const response = await request(app).patch(urlTest);
+      const response = await request(app).patch(urlTestAddCart2);
 
       expect(response.status).toBe(498);
     });
 
-    test('Then if the information is NOK (no idGuitar in params), the status code should be 404', async () => {
+    test('Then if the information is NOK (no idGuitar in params), the status code of addGuitar method should be 404', async () => {
       userLogin();
 
-      const urlTest = `/users/add/cart/`;
+      const urlTestAddCartWrong = `/users/add/cart/`;
 
       const response = await request(app)
-        .patch(urlTest)
+        .patch(urlTestAddCartWrong)
         .set('Authorization', `Bearer ${tokenUserTest}`);
 
       expect(response.status).toBe(404);
     });
 
-    test('Then if the information is NOK (the idGuitar is wrong), the status code should be 400', async () => {
+    test('Then if the information is NOK (the idGuitar is wrong), the status code of addGuitar method should be 400', async () => {
       adminLogin();
 
-      const urlTest = `/users/add/cart/111111`;
+      const urlTestAddCartWrongId = `/users/add/cart/111111`;
 
       const response = await request(app)
-        .patch(urlTest)
+        .patch(urlTestAddCartWrongId)
         .set('Authorization', `Bearer ${tokenAdminTest}`);
 
       expect(response.status).toBe(400);
     });
 
-    test('Then if the information is NOK (guitar is already added), the status code should be 405', async () => {
+    test('Then if the information is NOK (guitar is already added), the status code of addGuitar method should be 405', async () => {
       adminLogin();
 
-      const urlTest = `/users/add/cart/${guitarTestId1}`;
+      const urlTestAddCartTwice = `/users/add/cart/${guitarTestId1}`;
 
       const response = await request(app)
-        .patch(urlTest)
+        .patch(urlTestAddCartTwice)
         .set('Authorization', `Bearer ${tokenAdminTest}`);
 
       expect(response.status).toBe(405);
@@ -310,47 +310,47 @@ describe('Given the App with /users path and connected to MongoDB', () => {
   });
 
   describe('When the Patch method to users/remove/cart/:idGuitar path is performed', () => {
-    test('Then if the information is OK, the status code should be 202', async () => {
+    test('Then if the information is OK, the status code of removeGuitar method should be 202', async () => {
       adminLogin();
 
-      const urlTest = `/users/remove/cart/${guitarTestId1}`;
+      const urlTestRemoveCart1 = `/users/remove/cart/${guitarTestId1}`;
 
       const response = await request(app)
-        .patch(urlTest)
+        .patch(urlTestRemoveCart1)
         .set('Authorization', `Bearer ${tokenAdminTest}`);
 
       expect(response.status).toBe(202);
     });
 
-    test('Then if the information is NOK (no tokenInfo), the status code should be 498', async () => {
-      userLogin();
+    test('Then if the information is NOK (no tokenInfo), the status code of removeGuitar method should be 498', async () => {
+      adminLogin();
 
-      const urlTest = `/users/remove/cart/${guitarTestId1}`;
+      const urlTestRemoveCart2 = `/users/remove/cart/${guitarTestId2}`;
 
-      const response = await request(app).patch(urlTest);
+      const response = await request(app).patch(urlTestRemoveCart2);
 
       expect(response.status).toBe(498);
     });
 
-    test('Then if the information is NOK (no idGuitar in params), the status code should be 404', async () => {
+    test('Then if the information is NOK (no idGuitar in params), the status code of removeGuitar method should be 404', async () => {
       userLogin();
 
-      const urlTest = `/users/remove/cart/`;
+      const urlTestRemoveCartWrong = `/users/remove/cart/`;
 
       const response = await request(app)
-        .patch(urlTest)
+        .patch(urlTestRemoveCartWrong)
         .set('Authorization', `Bearer ${tokenUserTest}`);
 
       expect(response.status).toBe(404);
     });
 
-    test('Then if the information is NOK (the idGuitar is wrong), the status code should be 400', async () => {
+    test('Then if the information is NOK (the idGuitar is wrong), the status code of removeGuitar method should be 400', async () => {
       adminLogin();
 
-      const urlTest = `/users/remove/cart/111111`;
+      const urlTestRemoveCartWrongId = `/users/remove/cart/111111`;
 
       const response = await request(app)
-        .patch(urlTest)
+        .patch(urlTestRemoveCartWrongId)
         .set('Authorization', `Bearer ${tokenAdminTest}`);
 
       expect(response.status).toBe(400);
@@ -358,62 +358,62 @@ describe('Given the App with /users path and connected to MongoDB', () => {
   });
 
   describe('When the Get method to guitars/products path is performed', () => {
-    test('Then if the information is OK, the status code should be 202', async () => {
-      adminLogin();
+    test('Then if the information is OK, the status code of get method should be 202', async () => {
+      userLogin();
 
-      const urlTest = `/guitars/products`;
+      const urlTestGetProducts = `/guitars/products`;
 
       const response = await request(app)
-        .get(urlTest)
+        .get(urlTestGetProducts)
+        .set('Authorization', `Bearer ${tokenUserTest}`);
+
+      expect(response.status).toBe(201);
+    });
+
+    test('Then if the information is OK (with query page and style), the status code of get method should should be 202', async () => {
+      adminLogin();
+
+      const urlTestGetProductsComplete = `/guitars/products?style=Electric&page=2`;
+
+      const response = await request(app)
+        .get(urlTestGetProductsComplete)
         .set('Authorization', `Bearer ${tokenAdminTest}`);
 
       expect(response.status).toBe(201);
     });
 
-    test('Then if the information is OK (with query page and style), the status code should be 202', async () => {
+    test('Then if the information is NOK (page more than 5), the status code of get method should should be 400', async () => {
       adminLogin();
 
-      const urlTest = `/guitars/products?style=Electric&page=2`;
+      const urlTestGetProductsWrongPage = `/guitars/products?style=Electric&page=10`;
 
       const response = await request(app)
-        .get(urlTest)
+        .get(urlTestGetProductsWrongPage)
         .set('Authorization', `Bearer ${tokenAdminTest}`);
 
-      expect(response.status).toBe(201);
+      expect(response.status).toBe(400);
     });
 
-    test('Then if the information is NOK (page more than 5), the status code should be 400', async () => {
+    test('Then if the information is NOK (page less than 1), the status code of get method should be 400', async () => {
       userLogin();
 
-      const urlTest = `/guitars/products?style=Electric&page=10`;
+      const urlTestGetProductsWrongPageLess = `/guitars/products?style=Electric&page=0`;
 
       const response = await request(app)
-        .get(urlTest)
+        .get(urlTestGetProductsWrongPageLess)
         .set('Authorization', `Bearer ${tokenUserTest}`);
 
       expect(response.status).toBe(400);
     });
 
-    test('Then if the information is NOK (page less than 1), the status code should be 400', async () => {
-      userLogin();
+    test('Then if the information is NOK (style is not Electric or Acoustic), the status code of get method should be 400', async () => {
+      adminLogin();
 
-      const urlTest = `/guitars/products?style=Electric&page=0`;
-
-      const response = await request(app)
-        .get(urlTest)
-        .set('Authorization', `Bearer ${tokenUserTest}`);
-
-      expect(response.status).toBe(400);
-    });
-
-    test('Then if the information is NOK (style is not Electric or Acoustic), the status code should be 400', async () => {
-      userLogin();
-
-      const urlTest = `/guitars/products?style=Test&page=1`;
+      const urlTestGetProductsWrongStyle = `/guitars/products?style=Test&page=1`;
 
       const response = await request(app)
-        .get(urlTest)
-        .set('Authorization', `Bearer ${tokenUserTest}`);
+        .get(urlTestGetProductsWrongStyle)
+        .set('Authorization', `Bearer ${tokenAdminTest}`);
 
       expect(response.status).toBe(400);
     });
@@ -435,7 +435,7 @@ describe('Given the App with /users path and connected to MongoDB', () => {
     test('Then if the information is NOK (not idGuitar in params), the status code should be 404', async () => {
       adminLogin();
 
-      const urlTest = `/guitars/details/`;
+      const urlTest = `/guitars/details`;
 
       const response = await request(app)
         .get(urlTest)
