@@ -104,6 +104,24 @@ describe('Given the App with /users path and connected to MongoDB', () => {
     await mongoose.disconnect();
   });
 
+  const adminLogin = async () => {
+    const loginAdminMock = {
+      username: 'supertest1',
+      password: '12345',
+    };
+
+    await request(app).post('/users/login').send(loginAdminMock);
+  };
+
+  const userLogin = async () => {
+    const loginUserMock = {
+      username: 'supertest2',
+      password: '12345',
+    };
+
+    await request(app).post('/users/login').send(loginUserMock);
+  };
+
   describe('When the Post method to users/register path is performed', () => {
     test('Then if the information is OK, the status code should be 201', async () => {
       const registerMock = {
@@ -176,14 +194,9 @@ describe('Given the App with /users path and connected to MongoDB', () => {
 
   describe('When the Get method to users/:idUser path is performed', () => {
     test('Then if the information is OK, the status code should be 202', async () => {
-      const loginAdminMock = {
-        username: 'supertest1',
-        password: '12345',
-      };
+      adminLogin();
 
       const urlTest = `/users/${userAdminToken.id}`;
-
-      await request(app).post('/users/login').send(loginAdminMock);
 
       const response = await request(app)
         .get(urlTest)
@@ -193,14 +206,9 @@ describe('Given the App with /users path and connected to MongoDB', () => {
     });
 
     test('Then if the information is NOK (no tokenInfo), the status code should be 498', async () => {
-      const loginUserMock = {
-        username: 'supertest2',
-        password: '12345',
-      };
+      userLogin();
 
       const urlTest = `/users/${userAdminToken.id}`;
-
-      await request(app).post('/users/login').send(loginUserMock);
 
       const response = await request(app).get(urlTest);
 
@@ -208,14 +216,9 @@ describe('Given the App with /users path and connected to MongoDB', () => {
     });
 
     test('Then if the information is NOK (no idUser in params), the status code should be 404', async () => {
-      const loginUserMock = {
-        username: 'supertest2',
-        password: '12345',
-      };
+      userLogin();
 
       const urlTest = `/users/`;
-
-      await request(app).post('/users/login').send(loginUserMock);
 
       const response = await request(app)
         .get(urlTest)
@@ -225,14 +228,8 @@ describe('Given the App with /users path and connected to MongoDB', () => {
     });
 
     test('Then if the information is NOK (the token id is not equal to params id), the status code should be 400', async () => {
-      const loginAdminMock = {
-        username: 'supertest1',
-        password: '12345',
-      };
-
+      adminLogin();
       const urlTest = `/users/${userUserToken.id}`;
-
-      await request(app).post('/users/login').send(loginAdminMock);
 
       const response = await request(app)
         .get(urlTest)
@@ -244,14 +241,9 @@ describe('Given the App with /users path and connected to MongoDB', () => {
 
   describe('When the Patch method to users/add/cart/:idGuitar path is performed', () => {
     test('Then if the information is OK, the status code should be 202', async () => {
-      const loginAdminMock = {
-        username: 'supertest1',
-        password: '12345',
-      };
+      adminLogin();
 
       const urlTest = `/users/add/cart/${guitarTestId1}`;
-
-      await request(app).post('/users/login').send(loginAdminMock);
 
       const response = await request(app)
         .patch(urlTest)
@@ -261,14 +253,9 @@ describe('Given the App with /users path and connected to MongoDB', () => {
     });
 
     test('Then if the information is NOK (no tokenInfo), the status code should be 498', async () => {
-      const loginUserMock = {
-        username: 'supertest2',
-        password: '12345',
-      };
+      userLogin();
 
       const urlTest = `/users/add/cart/${guitarTestId1}`;
-
-      await request(app).post('/users/login').send(loginUserMock);
 
       const response = await request(app).patch(urlTest);
 
@@ -276,14 +263,9 @@ describe('Given the App with /users path and connected to MongoDB', () => {
     });
 
     test('Then if the information is NOK (no idGuitar in params), the status code should be 404', async () => {
-      const loginUserMock = {
-        username: 'supertest2',
-        password: '12345',
-      };
+      userLogin();
 
       const urlTest = `/users/add/cart/`;
-
-      await request(app).post('/users/login').send(loginUserMock);
 
       const response = await request(app)
         .patch(urlTest)
@@ -293,14 +275,9 @@ describe('Given the App with /users path and connected to MongoDB', () => {
     });
 
     test('Then if the information is NOK (the idGuitar is wrong), the status code should be 400', async () => {
-      const loginAdminMock = {
-        username: 'supertest1',
-        password: '12345',
-      };
+      adminLogin();
 
       const urlTest = `/users/add/cart/111111`;
-
-      await request(app).post('/users/login').send(loginAdminMock);
 
       const response = await request(app)
         .patch(urlTest)
@@ -310,14 +287,9 @@ describe('Given the App with /users path and connected to MongoDB', () => {
     });
 
     test('Then if the information is NOK (guitar is already added), the status code should be 405', async () => {
-      const loginAdminMock = {
-        username: 'supertest1',
-        password: '12345',
-      };
+      adminLogin();
 
       const urlTest = `/users/add/cart/${guitarTestId1}`;
-
-      await request(app).post('/users/login').send(loginAdminMock);
 
       const response = await request(app)
         .patch(urlTest)
@@ -329,14 +301,9 @@ describe('Given the App with /users path and connected to MongoDB', () => {
 
   describe('When the Patch method to users/remove/cart/:idGuitar path is performed', () => {
     test('Then if the information is OK, the status code should be 202', async () => {
-      const loginAdminMock = {
-        username: 'supertest1',
-        password: '12345',
-      };
+      adminLogin();
 
       const urlTest = `/users/remove/cart/${guitarTestId1}`;
-
-      await request(app).post('/users/login').send(loginAdminMock);
 
       const response = await request(app)
         .patch(urlTest)
@@ -346,14 +313,9 @@ describe('Given the App with /users path and connected to MongoDB', () => {
     });
 
     test('Then if the information is NOK (no tokenInfo), the status code should be 498', async () => {
-      const loginUserMock = {
-        username: 'supertest2',
-        password: '12345',
-      };
+      userLogin();
 
       const urlTest = `/users/remove/cart/${guitarTestId1}`;
-
-      await request(app).post('/users/login').send(loginUserMock);
 
       const response = await request(app).patch(urlTest);
 
@@ -361,14 +323,9 @@ describe('Given the App with /users path and connected to MongoDB', () => {
     });
 
     test('Then if the information is NOK (no idGuitar in params), the status code should be 404', async () => {
-      const loginUserMock = {
-        username: 'supertest2',
-        password: '12345',
-      };
+      userLogin();
 
       const urlTest = `/users/remove/cart/`;
-
-      await request(app).post('/users/login').send(loginUserMock);
 
       const response = await request(app)
         .patch(urlTest)
@@ -378,14 +335,9 @@ describe('Given the App with /users path and connected to MongoDB', () => {
     });
 
     test('Then if the information is NOK (the idGuitar is wrong), the status code should be 400', async () => {
-      const loginAdminMock = {
-        username: 'supertest1',
-        password: '12345',
-      };
+      adminLogin();
 
       const urlTest = `/users/remove/cart/111111`;
-
-      await request(app).post('/users/login').send(loginAdminMock);
 
       const response = await request(app)
         .patch(urlTest)
@@ -397,14 +349,9 @@ describe('Given the App with /users path and connected to MongoDB', () => {
 
   describe('When the Get method to guitars/products path is performed', () => {
     test('Then if the information is OK, the status code should be 202', async () => {
-      const loginAdminMock = {
-        username: 'supertest1',
-        password: '12345',
-      };
+      adminLogin();
 
       const urlTest = `/guitars/products`;
-
-      await request(app).post('/users/login').send(loginAdminMock);
 
       const response = await request(app)
         .get(urlTest)
@@ -414,14 +361,9 @@ describe('Given the App with /users path and connected to MongoDB', () => {
     });
 
     test('Then if the information is OK (with query page and style), the status code should be 202', async () => {
-      const loginAdminMock = {
-        username: 'supertest1',
-        password: '12345',
-      };
+      adminLogin();
 
       const urlTest = `/guitars/products?style=Electric&page=2`;
-
-      await request(app).post('/users/login').send(loginAdminMock);
 
       const response = await request(app)
         .get(urlTest)
@@ -431,14 +373,9 @@ describe('Given the App with /users path and connected to MongoDB', () => {
     });
 
     test('Then if the information is NOK (page more than 5), the status code should be 400', async () => {
-      const loginUserMock = {
-        username: 'supertest2',
-        password: '12345',
-      };
+      userLogin();
 
       const urlTest = `/guitars/products?style=Electric&page=10`;
-
-      await request(app).post('/users/login').send(loginUserMock);
 
       const response = await request(app)
         .get(urlTest)
@@ -448,14 +385,9 @@ describe('Given the App with /users path and connected to MongoDB', () => {
     });
 
     test('Then if the information is NOK (page less than 1), the status code should be 400', async () => {
-      const loginUserMock = {
-        username: 'supertest2',
-        password: '12345',
-      };
+      userLogin();
 
       const urlTest = `/guitars/products?style=Electric&page=0`;
-
-      await request(app).post('/users/login').send(loginUserMock);
 
       const response = await request(app)
         .get(urlTest)
@@ -465,14 +397,9 @@ describe('Given the App with /users path and connected to MongoDB', () => {
     });
 
     test('Then if the information is NOK (style is not Electric or Acoustic), the status code should be 400', async () => {
-      const loginUserMock = {
-        username: 'supertest2',
-        password: '12345',
-      };
+      userLogin();
 
       const urlTest = `/guitars/products?style=Test&page=1`;
-
-      await request(app).post('/users/login').send(loginUserMock);
 
       const response = await request(app)
         .get(urlTest)
