@@ -130,7 +130,7 @@ export class UsersController {
       const guitarToAdd = await this.guitarsRepo.readId(req.params.idGuitar);
 
       if (!guitarToAdd)
-        throw new HTTPError(404, 'Not found', 'Not found guitar ID');
+        throw new HTTPError(400, 'Not found', 'Not found guitar ID');
 
       if (actualUser.myGuitars.find((item) => item.id === guitarToAdd.id))
         throw new HTTPError(
