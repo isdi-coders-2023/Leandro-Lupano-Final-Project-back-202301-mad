@@ -113,10 +113,10 @@ describe('Given the controller GuitarsController', () => {
       expect(next).toHaveBeenCalled();
     });
 
-    test('Then if req.body.page is more than 5, it should be catch the error and next function have been called', async () => {
+    test('Then if req.body.page is more than 7, it should be catch the error and next function have been called', async () => {
       const req = {
         query: {
-          page: '6',
+          page: '8',
         },
       } as unknown as Request;
 

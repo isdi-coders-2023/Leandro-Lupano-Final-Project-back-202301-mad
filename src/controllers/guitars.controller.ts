@@ -45,7 +45,7 @@ export class GuitarsController {
 
       const pageNumber = Number(pageString);
 
-      if (pageNumber < 1 || pageNumber > 5)
+      if (pageNumber < 1 || pageNumber > 7)
         throw new HTTPError(
           400,
           'Wrong page number',
